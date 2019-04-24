@@ -14,5 +14,6 @@ Usage: freshfiles.pl [HOURS] "/path/to/dir1/*:/only/tarballs/in/dir2/*gz"
 
 ## rhn
 Monitor configuration managment differences with RedHat Satellite 5.x and Spacewalk 2.*
-You must have rhn_check installed and working.
+
+You must have "rhncfg-client verify" installed and working.
 
