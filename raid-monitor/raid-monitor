@@ -28,7 +28,7 @@ MOD_PATH="${0%/*}/raid.d/"	## path to raid-modules
 TMPFILE="${BBTMP}/tmp.raid-monitor.txt"
 BBCOLUMN="raid"
 
-REFFILE="${BBTMP}/raid-monitor-ref.txt"
+REFFILE="${BBHOME}/ext/raid-monitor-ref.txt"
 FIST_LINE=""				## used to store 1st line of status-msg
 
 ## raid-card that should be monitored: (no mixed use possible yet)
