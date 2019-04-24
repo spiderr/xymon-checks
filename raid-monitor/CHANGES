@@ -1,0 +1,33 @@
+CHANGES for "raid-monitor for Xymon"
+
+v0.9.8 (2014-06-13):
+-----------------------------------------------------------------------------
+- raid.d/megaraid.raid: add `-nolog` option and exclude temperature on newer
+  controllers
+
+	- the `-nolog`-option was missing which resulted in growing logfiles to
+	  be written. If you were using the `megaraid.raid`-module please check
+	  for the files `Mega*.log` and `Cmd*.log` on your system (depending on
+	  your setup these may be writte on `/`)
+
+	- newer LSI controllers and firmware versions include temperature
+	  values, these are properly excluded from the output now
+
+
+v0.9.7 (2011-04-17):
+-----------------------------------------------------------------------------
+- added "summary of test result" as the first line of the status. This needs
+  tail(1) and sed(1).
+- replaced all calls of external programs to use variables
+- added basic testing for availablity of external programs
+
+
+v0.9.6 (2011-03-27):
+-----------------------------------------------------------------------------
+- raid-module for LSI Megaraid controllers added (raid.d/megaraid.raid)
+
+
+v0.9.5 (2010-10-02):
+-----------------------------------------------------------------------------
+- initial public release
+
