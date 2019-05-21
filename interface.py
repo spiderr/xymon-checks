@@ -174,8 +174,8 @@ for interface in reversed(ifaceshort):
             if SPEED != "UNKNOWN":
 			    # There was no global --speed set, compare fastest possbible. 
                 if GLOBALSPEED != 0 and GLOBALSPEED != SPEED:
-                    STATUS.append("&yellow      Speed for this interface does not match desired speed: "+ SPEED + "!=" + GLOBALSPEED + "\n")
-                    COLOR="YELLOW"    
+                    STATUS.append("&red      Speed for this interface does not match desired speed: "+ SPEED + "!=" + GLOBALSPEED + "\n")
+                    COLOR="RED"    
 				# There was no global --speed set, compare fastest possbible. 
                 elif GLOBALSPEED == 0 and HLINKMODE > SPEED:
                     STATUS.append("&yellow      Higher link mode possible for this interface"+"\n")
