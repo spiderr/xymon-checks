@@ -18,6 +18,5 @@ Monitor configuration managment differences with RedHat Satellite 5.x and Spacew
 You must have "rhncfg-client verify" installed and working.
 
 ## interface
-Fork of the iface check with the addition of a global --speed option to handle scenarios where hardware is faster than the switch, i.e. 10GbaseT nic, but only 1GbaseT on the switch.
-
+This XYMON check uses ethtool to monitor network interfaces speeds. This is a fork of the iface check (link below) with the addition of a global --speed option to handle scenarios where hardware is faster than the switch, i.e. 10GbaseT nic, but only 1GbaseT on the switch.
 https://blog.dafert.org/xymon-bigbrother-script-to-monitor-network-interfaces-duplex-settings-and-bonding/
