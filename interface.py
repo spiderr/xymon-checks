@@ -16,6 +16,7 @@ import struct
 import array
 import sys
 import time
+import argparse
 
 # read the file /proc/net/dev
 netdev = open('/proc/net/dev','r')
@@ -45,11 +46,18 @@ def get_ip_address(ifname):
 #BLACKLIST="em1:bond0:"
 BLACKLIST=":"
 
-DEBUGMODE=0
-if len(sys.argv)==2:
-    if sys.argv[1] == "--debug":
-        DEBUGMODE=1
-    
+parser = argparse.ArgumentParser(description='This is a demo.')
+parser.add_argument("--debug", action="store_true", help="Activate debugging and print all output")
+parser.add_argument("--speed", metavar='N', type=str, help='Desired port speed for all interfaces. If you have 10GbaseT nic, and 1GbaseT switch, this is required.')
+parser.set_defaults(debug=False)
+args = parser.parse_args()
+
+DEBUGMODE=args.debug
+GLOBALSPEED=0
+
+if args.speed:
+    GLOBALSPEED=args.speed
+
 TIME=time.ctime()
 
 
@@ -83,7 +91,7 @@ for interface in reversed(ifaceshort):
     #LINK=None
     #del LINK
     
-    if DEBUGMODE==0:
+    if DEBUGMODE==False:
         ETHTOOLOUT=subprocess.Popen(["sudo","ethtool",interface], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     else:
         ETHTOOLOUT=subprocess.Popen(["sudo","ethtool",interface], stdout=subprocess.PIPE)
@@ -164,7 +172,12 @@ for interface in reversed(ifaceshort):
             HLINKTYPE=re.sub("[0-9]*.*/(.*)",'\\1',SLINKMODE)
             STATUS.append("        Highest link mode:" + HLINKMODE + " " + HLINKTYPE+"\n")
             if SPEED != "UNKNOWN":
-                if HLINKMODE > SPEED:
+			    # There was no global --speed set, compare fastest possbible. 
+                if GLOBALSPEED != 0 and GLOBALSPEED != SPEED:
+                    STATUS.append("&yellow      Speed for this interface does not match desired speed: "+ SPEED + "!=" + GLOBALSPEED + "\n")
+                    COLOR="YELLOW"    
+				# There was no global --speed set, compare fastest possbible. 
+                elif GLOBALSPEED == 0 and HLINKMODE > SPEED:
                     STATUS.append("&yellow      Higher link mode possible for this interface"+"\n")
                     COLOR="YELLOW"    
     if "bond" in interface:
@@ -186,16 +199,16 @@ PSTATUS=""
 for line in STATUS:
     PSTATUS=PSTATUS+line
     
-    if DEBUGMODE==1: print line,
+    if DEBUGMODE==True: print line,
 
 
 
-if os.environ.has_key('BB'):
-    _cmd_line=os.environ['BB']+" "+os.environ['BBDISP']+" \"status "+os.environ['MACHINE']+".interface"+" "+COLOR+" "+ TIME + PSTATUS +'"'
-    if DEBUGMODE==1: print _cmd_line
+if os.environ.has_key('XYMON'):
+    _cmd_line=os.environ['XYMON']+" "+os.environ['XYMONSERVERS']+" \"status "+os.environ['MACHINE']+".interface"+" "+COLOR+" "+ TIME + PSTATUS +'"'
+    if DEBUGMODE==True: print _cmd_line
     os.system(_cmd_line)
 else:
-    sys.stderr.write("ERROR: set BB, BBDISP and MACHINE environment variable to point to your installation\n")
+    sys.stderr.write("ERROR: set XYMON, XYMONSERVERS and MACHINE environment variable to point to your installation\n")
     sys.exit(1)
     
 
